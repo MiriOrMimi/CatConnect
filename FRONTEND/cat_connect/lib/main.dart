@@ -92,7 +92,7 @@ class MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    _checkLoginStatus(); // verifica il login all'avvio
+    //_checkLoginStatus(); // verifica il login all'avvio
     _loadTheme(); // Carica il tema salvato
   }
 

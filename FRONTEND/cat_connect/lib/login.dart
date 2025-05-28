@@ -59,7 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     try {
       final response = await http.post(
-        Uri.parse('http://10.1.0.13:5000/api/auth/login'),
+        Uri.parse('https://catconnect-7yg6.onrender.com/api/auth/login'),
         body: json.encode({
           'username': _usernameController.text,
           'password': _passwordController.text,
@@ -126,7 +126,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
     //salviamo i dati dell'utente sul DB
     final response = await http.post(
-      Uri.parse('http://10.1.0.13:5000/api/auth/register'),
+      Uri.parse('https://catconnect-7yg6.onrender.com/api/auth/register'),
       body: json.encode({
         'username': _usernameController.text,
         'email': _emailController.text,

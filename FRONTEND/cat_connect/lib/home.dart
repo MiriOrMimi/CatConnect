@@ -46,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     try {
       final response = await http.get(
-        Uri.parse('http://10.1.0.13:5000/api/auth/me'),
+        Uri.parse('https://catconnect-7yg6.onrender.com/api/auth/me'),
         headers: {'Authorization': token},
       );
 
@@ -76,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> loadPosts() async {
     try {
       final response = await http.post(
-        Uri.parse('http://10.1.0.13:5000/api/auth/followingPosts'),
+        Uri.parse('https://catconnect-7yg6.onrender.com/api/auth/followingPosts'),
         body: json.encode({'id': id}),
         headers: {'Content-Type': 'application/json'},
       );
@@ -103,7 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> toggleLike(String postId) async {
     final response = await http.post(
-      Uri.parse('http://10.1.0.13:5000/api/auth/toggleLike/$postId'),
+      Uri.parse('https://catconnect-7yg6.onrender.com/api/auth/toggleLike/$postId'),
       body: json.encode({'id': id}),
       headers: {'Content-Type': 'application/json'},
     );
@@ -132,7 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
 Future<void> addComment(String postId, String text) async {
   final response = await http.post(
-    Uri.parse('http://10.1.0.13:5000/api/auth/addComment/$postId'),
+    Uri.parse('https://catconnect-7yg6.onrender.com/api/auth/addComment/$postId'),
     body: json.encode({
       'user': id,
       'text': text,
@@ -155,7 +155,7 @@ Future<void> viewComments(String postId) async {
 
   try {
     final response = await http.post(
-      Uri.parse('http://10.1.0.13:5000/api/auth/getAllComments/$postId'),
+      Uri.parse('https://catconnect-7yg6.onrender.com/api/auth/getAllComments/$postId'),
       headers: {'Content-Type': 'application/json'},
     );
 

@@ -47,7 +47,7 @@ class _SearchedUserScreenState extends State<SearchedUserScreen> {
 
     try {
       final response = await http.get(
-        Uri.parse('http://10.1.0.13:5000/api/auth/me'),
+        Uri.parse('https://catconnect-7yg6.onrender.com/api/auth/me'),
         headers: {'Authorization': token},
       );
 
@@ -73,7 +73,7 @@ class _SearchedUserScreenState extends State<SearchedUserScreen> {
 
     try {
       final response = await http.get(
-        Uri.parse('http://10.1.0.13:5000/api/auth/user/${widget.userId}'),
+        Uri.parse('https://catconnect-7yg6.onrender.com/api/auth/user/${widget.userId}'),
       );
 
       if (response.statusCode == 200) {
@@ -110,9 +110,9 @@ class _SearchedUserScreenState extends State<SearchedUserScreen> {
     String urlFollow;
 
     if(_isFollowing == false){
-      urlFollow = "http://10.1.0.13:5000/api/auth/follow";
+      urlFollow = "https://catconnect-7yg6.onrender.com/api/auth/follow";
     }else{
-      urlFollow = "http://10.1.0.13:5000/api/auth/unfollow";
+      urlFollow = "https://catconnect-7yg6.onrender.com/api/auth/unfollow";
     }
 
     print(widget.userId);

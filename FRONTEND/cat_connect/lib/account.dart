@@ -53,7 +53,7 @@ class _AccountScreenState extends State<AccountScreen> {
 
     try {
       final response = await http.get(
-        Uri.parse('http://10.1.0.13:5000/api/auth/me'),
+        Uri.parse('https://catconnect-7yg6.onrender.com/api/auth/me'),
         headers: {'Authorization': token},
       );
 

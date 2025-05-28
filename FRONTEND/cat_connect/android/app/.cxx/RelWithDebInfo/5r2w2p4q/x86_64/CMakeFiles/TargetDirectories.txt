@@ -1,0 +1,2 @@
+C:/Users/riccardo.stoppa/Desktop/CatConnect2/FRONTEND/cat_connect/android/app/.cxx/RelWithDebInfo/5r2w2p4q/x86_64/CMakeFiles/edit_cache.dir
+C:/Users/riccardo.stoppa/Desktop/CatConnect2/FRONTEND/cat_connect/android/app/.cxx/RelWithDebInfo/5r2w2p4q/x86_64/CMakeFiles/rebuild_cache.dir

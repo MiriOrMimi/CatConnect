@@ -381,15 +381,16 @@ router.post('/addScore', async (req, res) => {
   }
 });
 
-
-
 router.get('/getScores', async (req, res) => {
-
   try {
     const topScores = await Score.find()
-      .sort({ score: -1 }) // Ordina per punteggio decrescente
-      .limit(10);          // Limita a 10 risultati
+      .sort({ score: -1 })           // Ordina per punteggio decrescente
+      .limit(10)                     // Limita a 10 risultati
+      .populate('user', 'username'); // Popola solo il campo "username" dell'utente
 
+    // topScores ora conterrà qualcosa tipo:
+    // [{ score: 1200, user: { _id: ..., username: "Mario" } }, ...]
+    
     res.status(200).json(topScores);
   } catch (error) {
     console.error('Errore nel recupero dei punteggi:', error); 

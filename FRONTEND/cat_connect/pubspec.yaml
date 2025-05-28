@@ -73,6 +73,7 @@ flutter:
    - assets/cat_detector.tflite
    - assets/posts.json
    - assets/generated-image.jpg
+   - assets/space_bg.jpg
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

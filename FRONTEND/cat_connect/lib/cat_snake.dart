@@ -124,7 +124,7 @@ class _SnakeGameState extends State<SnakeGame> {
 
     try {
       final response = await http.get(
-        Uri.parse('http://10.1.0.6:5000/api/auth/me'),
+        Uri.parse('https://catconnect-7yg6.onrender.com/api/auth/me'),
         headers: {'Authorization': token},
       );
 
@@ -143,222 +143,227 @@ class _SnakeGameState extends State<SnakeGame> {
       });
     }
 
-
     final response = await http.post(
-      Uri.parse('http://10.1.0.6:5000/api/auth/addScore'),
+      Uri.parse('https://catconnect-7yg6.onrender.com/api/auth/addScore'),
       body: json.encode({'user': userID, 'score': score}),
       headers: {'Content-Type': 'application/json'},
     );
-    
+
+    setState(() {
+      errore = 'passato1';
+    });
+    if (response.statusCode == 200) {
       setState(() {
-          errore = 'passato1';
-        });
-        if (response.statusCode == 200) {
-          setState(() {
-          errore = 'passato2';
-        });
-      final res = await http.get(Uri.parse('http://10.1.0.6:5000/api/auth/getScores'));
-
-setState(() {
-  errore = 'passato3';
-});
-
-if (res.statusCode == 200) {
-  try {
-    final data = json.decode(res.body); // Decodifica la risposta JSON in una lista di mappe.
-
-    if (data != null && data.isNotEmpty) {
-      // Crea una lista di oggetti con i punteggi, ad esempio:
-      List<Map<String, dynamic>> scoresList = List<Map<String, dynamic>>.from(data);
-      
-      setState(() {
-        topScores = scoresList; // Aggiorna lo stato con la lista dei punteggi
+        errore = 'passato2';
       });
-    } else {
-      print('Nessuna classifica trovata.');
+      final res =
+          await http.get(Uri.parse('https://catconnect-7yg6.onrender.com/api/auth/getScores'));
+
+      setState(() {
+        errore = 'passato3';
+      });
+
+      if (res.statusCode == 200) {
+        try {
+          final data = json.decode(
+              res.body); // Decodifica la risposta JSON in una lista di mappe.
+
+          if (data != null && data.isNotEmpty) {
+            // Crea una lista di oggetti con i punteggi, ad esempio:
+            List<Map<String, dynamic>> scoresList =
+                List<Map<String, dynamic>>.from(data);
+
+            setState(() {
+              topScores =
+                  scoresList; // Aggiorna lo stato con la lista dei punteggi
+            });
+          } else {
+            print('Nessuna classifica trovata.');
+          }
+        } catch (e) {
+          print('Errore nel parsing dei dati: $e');
+        }
+      } else {
+        print('Errore nel recupero della classifica: ${res.statusCode}');
+        print('Response body: ${res.body}');
+      }
     }
-  } catch (e) {
-    print('Errore nel parsing dei dati: $e');
-  }
-} else {
-  print('Errore nel recupero della classifica: ${res.statusCode}');
-  print('Response body: ${res.body}');
-}
-    }
-  
-       
-   
   }
 
   // === RIAVVIA GIOCO ===
   void _restartGame() {
-    setState(() {
-      snake = [Position(5, 5)];
-      direction = Direction.right;
-      score = 0;
-      generateFood();
-    });
-    startGame();
-  }
+  setState(() {
+    snake = [Position(5, 5)];
+    direction = Direction.right;
+    score = 0;
+    gameOver = false;
+    generateFood();
+  });
+  startGame();
+}
+
 
   @override
   Widget build(BuildContext context) {
     if (!gameOver) {
- return Scaffold(
-  backgroundColor: Colors.lightGreen[100],
-  body: SafeArea(
-    child: Column(
-      children: [
-        const SizedBox(height: 12),
-
-        // Punteggio in alto
-        Text(
-          'Punteggio: $score',
-          style: const TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: Colors.black87,
-          ),
-        ),
-
-        const SizedBox(height: 8),
-
-        // Griglia di gioco
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: GridView.builder(
-              itemCount: rowSize * rowSize,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: rowSize,
-              ),
-              itemBuilder: (context, index) {
-                final x = index % rowSize;
-                final y = index ~/ rowSize;
-                final pos = Position(x, y);
-
-                if (snake.any((s) => s.equals(pos))) {
-                  return Center(
-                    child: Text(catEmoji,
-                        style: const TextStyle(fontSize: 20)),
-                  );
-                } else if (food.equals(pos)) {
-                  return Center(
-                    child: Text(foodEmoji,
-                        style: const TextStyle(fontSize: 20)),
-                  );
-                } else {
-                  return Container(color: Colors.lightGreen[300]);
-                }
-              },
-            ),
-          ),
-        ),
-
-        // Frecce direzionali più compatte
-        Padding(
-          padding: const EdgeInsets.only(bottom: 8),
+      return Scaffold(
+        backgroundColor: Colors.lightGreen[100],
+        body: SafeArea(
           child: Column(
             children: [
-              // Freccia su
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  IconButton(
-                    iconSize: 48,
-                    icon: const Icon(Icons.arrow_upward),
-                    onPressed: () => changeDirection(Direction.up),
-                  ),
-                ],
+              const SizedBox(height: 12),
+
+              // Punteggio in alto
+              Text(
+                'Punteggio: $score',
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
+                ),
               ),
 
-              // Freccia sinistra, destra
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  IconButton(
-                    iconSize: 48,
-                    icon: const Icon(Icons.arrow_back),
-                    onPressed: () => changeDirection(Direction.left),
+              const SizedBox(height: 8),
+
+              // Griglia di gioco
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: GridView.builder(
+                    itemCount: rowSize * rowSize,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: rowSize,
+                    ),
+                    itemBuilder: (context, index) {
+                      final x = index % rowSize;
+                      final y = index ~/ rowSize;
+                      final pos = Position(x, y);
+
+                      if (snake.any((s) => s.equals(pos))) {
+                        return Center(
+                          child: Text(catEmoji,
+                              style: const TextStyle(fontSize: 20)),
+                        );
+                      } else if (food.equals(pos)) {
+                        return Center(
+                          child: Text(foodEmoji,
+                              style: const TextStyle(fontSize: 20)),
+                        );
+                      } else {
+                        return Container(color: Colors.lightGreen[300]);
+                      }
+                    },
                   ),
-                  const SizedBox(width: 40),
-                  IconButton(
-                    iconSize: 48,
-                    icon: const Icon(Icons.arrow_forward),
-                    onPressed: () => changeDirection(Direction.right),
-                  ),
-                ],
+                ),
               ),
 
-              // Freccia giù
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  IconButton(
-                    iconSize: 48,
-                    icon: const Icon(Icons.arrow_downward),
-                    onPressed: () => changeDirection(Direction.down),
-                  ),
-                ],
+              // Frecce direzionali
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        IconButton(
+                          iconSize: 48,
+                          icon: const Icon(Icons.arrow_upward),
+                          onPressed: () => changeDirection(Direction.up),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        IconButton(
+                          iconSize: 48,
+                          icon: const Icon(Icons.arrow_back),
+                          onPressed: () => changeDirection(Direction.left),
+                        ),
+                        const SizedBox(width: 40),
+                        IconButton(
+                          iconSize: 48,
+                          icon: const Icon(Icons.arrow_forward),
+                          onPressed: () => changeDirection(Direction.right),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        IconButton(
+                          iconSize: 48,
+                          icon: const Icon(Icons.arrow_downward),
+                          onPressed: () => changeDirection(Direction.down),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
         ),
-      ],
-    ),
-  ),
-);
-} else {
+      );
+    } else {
+      // Schermata Game Over con classifica
       return AlertDialog(
-  backgroundColor: Colors.white,
-  shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.circular(16),
-  ),
-  title: const Center(
-    child: Text(
-      'GAME OVER',
-      style: TextStyle(
-        color: Colors.red,
-        fontSize: 24,
-        fontWeight: FontWeight.bold,
-        letterSpacing: 2,
-      ),
-    ),
-  ),
-  content: Column(
-    mainAxisSize: MainAxisSize.min,
-    children: [
-      const SizedBox(height: 10),
-      const Text(
-        '🏆 Classifica',
-        style: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
         ),
-        textAlign: TextAlign.center,
-      ),
-      const SizedBox(height: 10),
-      ...topScores.map((entry) => Text(
-            '• ${entry['score']} punti',
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 16),
-          )),
-    ],
-  ),
-  actionsAlignment: MainAxisAlignment.center,
-  actions: [
-    TextButton(
-      onPressed: () {
-        Navigator.pop(context);
-        _restartGame();
-      },
-      child: const Text(
-        'Riprova',
-        style: TextStyle(fontSize: 16),
-      ),
-    ),
-  ],
-);
+        title: const Center(
+          child: Text(
+            'GAME OVER',
+            style: TextStyle(
+              color: Colors.red,
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 2,
+            ),
+          ),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(height: 10),
+            const Text(
+              '🏆 Classifica',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 10),
+            ...topScores.asMap().entries.map((entry) {
+              final index = entry.key;
+              final value = entry.value;
+              String medal;
+              switch (index) {
+                case 0:
+                  medal = '🥇';
+                  break;
+                case 1:
+                  medal = '🥈';
+                  break;
+                case 2:
+                  medal = '🥉';
+                  break;
+                default:
+                  medal = '${index + 1}.';
+              }
+              return Text(
+                '$medal ${value['user']['username'] ?? 'Utente'}: ${value['score']} punti',
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 20),
+              );
+            }),
+            const SizedBox(height: 20),
+          ],
+        ),
+        actionsAlignment: MainAxisAlignment.center,
+      );
     }
   }
 
